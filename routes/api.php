@@ -3,7 +3,7 @@
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRegistrationController;
-
+use App\Http\Controllers\UserLoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,4 +23,6 @@ use App\Http\Controllers\UserRegistrationController;
 Route::controller(UserRegistrationController::class)->group(function() {
     Route::get('index','index');
     Route::post('register','store');
+    Route::get('user/verify/{verification_code}', 'verifyUser');
 });
+Route::post('login',[UserLoginController::class,'login']);

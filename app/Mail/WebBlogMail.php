@@ -30,6 +30,6 @@ class WebBlogMail extends Mailable
     public function build()
     {
         return $this->subject('Mail from web_blog')
-                ->view('email');
+            ->view('email');
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
-// use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 
 class UserRegistrationController extends Controller
 {
@@ -53,23 +53,19 @@ class UserRegistrationController extends Controller
                 $validateUser->password = Hash::make($request->password);
 
                 $verification_code = Str::random(12);
-                DB::table('user_verifications')->insert(['users_id'=>1,'token'=>$verification_code]);
+                $result = $validateUser->save();
+                DB::table('user_verifications')->insert(['users_id'=>$validateUser['id'],'token'=>$verification_code]);
 
                 $details = [
                     'email' => $request->email,
                     'name' => $request->name,
                     'title' => 'Registration Successful',
-                    'subject' => 'Please verify your email address.'
-                    // 'subject'=>'Thank you for registring an account with us.
-                    // Stay tune as we promise to give you useful and educations contents',
+                    'subject' => 'Please verify your email address.',
+                    'token'=>$verification_code
                 ];
                 Mail::to($details['email'])->send(new WebBlogMail($details));
 
 
-
-
-
-                $result = $validateUser->save();
                 if ($result) {
                     $response = response()->json([
                         "status" => true,
@@ -91,8 +87,50 @@ class UserRegistrationController extends Controller
         }
         return $response;
 
+    }
+
+    public function verifyUser($verification_code){
+        try {
+            $check = DB::table('user_verifications')->where('token',$verification_code)->first();
+
+            if(!is_null($check)){
+                $user = User::find($check->users_id);
+
+                if($user->is_verified == 1){
+                    $response = response()->json([
+                        'status'=> true,
+                        'message'=> 'Account already verified..'
+                    ],200);
+                } else {
+                    $user->update(['is_verified' => 1]);
+                    $result = DB::table('user_verifications')->where('token',$verification_code)->delete();
+                    if ($result) {
+                        $response = response()->json([
+                            'status'=> true,
+                            'message'=> 'You have successfully verified your email address.'
+                        ],200);
+                    } else {
+                        $response = response()->json([
+                            'status'=> false,
+                            'message'=> 'Error occurred, email address was not verify. Try again'
+                        ],400);
+                    }
 
 
+                }
+            } else {
+                return response()->json([
+                    'status'=> false,
+                    'message'=> "Verification code is invalid."
+                ],404);
+            }
+        } catch (\Throwable $th) {
+            $response = response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+        return $response;
     }
 
 }

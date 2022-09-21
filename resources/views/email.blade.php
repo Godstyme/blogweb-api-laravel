@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <div class="card" style="background: wheat; padding: 10px 8px;">
+    <div class="card" style="background: wheat; padding: 10px 8px;border-radius:10px;">
         <h1 class="card-title" style="color:green;">
             {{ $details['title'] }}
         </h1>
@@ -24,7 +24,9 @@
             <p class="card-text">
                 {{ $details['subject'] }}
             </p>
-            <a href="{{ url('user/verify', $verification_code)}}" class="btn btn-primary">Confirm my email address</a>
+            <strong>Verification Code: &nbsp;  {{ $details['token'] }}</strong>
+            <br>
+            <a href="{{ url('user/verify', $details['token'] )}}" class="btn btn-primary">Confirm my email address</a>
         </div>
         <div class="card-footer">
             <p><strong>Best Regards!!!</strong></p>
