@@ -25,4 +25,14 @@ Route::controller(UserRegistrationController::class)->group(function() {
     Route::post('register','store');
     Route::get('user/verify/{verification_code}', 'verifyUser');
 });
-Route::post('login',[UserLoginController::class,'login']);
+
+Route::controller(UserLoginController::class)->group(function() {
+    Route::post('login','login');
+    Route::post('refresh', 'refresh');
+});
+
+Route::group(['middleware' => ['jwt.auth']], function() {
+    Route::get('logout', [UserLoginController::class,'logout']);
+
+});
+
