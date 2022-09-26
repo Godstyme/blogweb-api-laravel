@@ -1,9 +1,12 @@
 <?php
 
 // use Illuminate\Http\Request;
+
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\BloggerOperation;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +29,14 @@ Route::controller(UserRegistrationController::class)->group(function() {
     Route::get('user/verify/{verification_code}', 'verifyUser');
 });
 
+Route::controller(AdminController::class)->group(function() {
+    Route::get('admin/view','index');
+    Route::post('admin/register','store');
+});
+
+// Route::post('admin/register',[AdminController::class,'store'])->middleware('admin');
+// Route::get('admin/view',[AdminController::class,'index'])->middleware('admin');
+
 Route::controller(UserLoginController::class)->group(function() {
     Route::post('login','login');
     Route::post('refresh', 'refresh');
@@ -34,5 +45,10 @@ Route::controller(UserLoginController::class)->group(function() {
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', [UserLoginController::class,'logout']);
 
+    Route::controller(BloggerOperation::class)->group(function() {
+        Route::get('show/{id}','show');
+    });
+
 });
+
 

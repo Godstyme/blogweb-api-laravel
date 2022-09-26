@@ -1,36 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
 use App\Mail\WebBlogMail;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-
-class UserRegistrationController extends Controller
+class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return response()->json(["message"=>'Hello World ma',"status"=>true], 202);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -39,6 +27,7 @@ class UserRegistrationController extends Controller
             $validateUser = [
                 'name' =>   'required|string|min:5|max:50',
                 'email' => ['required', 'string', 'email', 'max:80', 'unique:users'],
+                'role'=> ['required','string','min:4', 'max:6'],
                 'password' => 'required|min:8'
             ];
             $validator = Validator::make($request->all(), $validateUser);
@@ -48,15 +37,18 @@ class UserRegistrationController extends Controller
                     "message" => $validator->errors()
                 ], 422);
             } else {
-                $validateUser = new User;
+                $validateUser = new User();
                 $validateUser->name = $request->name;
                 $validateUser->email = $request->email;
+                $validateUser->role = $request->role;
                 $validateUser->password = Hash::make($request->password);
 
                 $verification_code = Str::random(12);
                 $result = $validateUser->save();
-                // $now = date('Y-m-d H:i');
-                DB::table('user_verifications')->insert(['users_id'=>$validateUser['id'],'token'=>$verification_code,'created_at'=>Carbon::now()]);
+                DB::table('user_verifications')->insert([
+                    'users_id'=>$validateUser['id'],
+                    'token'=>$verification_code,'created_at'=>Carbon::now()
+                ]);
 
                 $details = [
                     'email' => $request->email,
@@ -135,4 +127,14 @@ class UserRegistrationController extends Controller
         return $response;
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }
