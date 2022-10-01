@@ -6,6 +6,7 @@ use App\Mail\WebBlogMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -135,6 +136,32 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Auth::user();
+        if ($user->role == "admin") {
+            $users = User::find($id);
+            $deletePost = $users->delete();
+
+            if ($deletePost) {
+                $response = response()->json([
+                    'status' => true,
+                    'message' => 'User Deleted successfully by the admin :)',
+                ], 200);
+            } else {
+                $response = response()->json([
+                    'status' => false,
+                    'message' => 'Operation failed, User was not deleted',
+                ], 400);
+            }
+
+
+        } else {
+            $response = response()->json([
+                "status"=>false,
+                "message" => 'Operation failed, it seems user was not found'
+            ],404);
+        }
+        return $response;
+
     }
+
 }

@@ -30,9 +30,13 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     });
 
     Route::controller(BlogPostController::class)->group(function() {
-        // Route::get('admin/view','index');
+        Route::get('post/index','index');
+        Route::get('show/{id}','show');
         Route::post('makepost','store');
+        Route::delete('post/delete/{id}','destroy');
     });
+
+    Route::delete('admin/deleteuser/{id}',[AdminController::class,'destroy']);
 
 
 

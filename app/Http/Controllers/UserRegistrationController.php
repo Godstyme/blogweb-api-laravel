@@ -21,7 +21,7 @@ class UserRegistrationController extends Controller
      */
     public function index()
     {
-        return response()->json(["message"=>'Hello World ma',"status"=>true], 202);
+        // return response()->json(["message"=>'Hello World ma',"status"=>true], 202);
     }
 
 

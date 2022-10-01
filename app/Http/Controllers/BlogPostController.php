@@ -16,7 +16,30 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $posts = BlogPost::all();
+            $totalPost = count($posts);
+            if (count($posts) == 0) {
+                $response = response()->json([
+                    "status"=>false,
+                    "message" => 'No Search Results Found'
+                ],404);
+            } else {
+                $response = response()->json([
+                    "status"=>true,
+                    'data' => $posts,
+                    'message' => 'Retrieved successfully',
+                    "Total Post"=>$totalPost
+                ],200);
+            }
+        } catch (\Throwable $th) {
+            $response = response()->json([
+                'status' => false,
+                'message'=> 'Please login to view all blog',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+        return $response;
     }
 
     /**
@@ -74,19 +97,30 @@ class BlogPostController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $posts = BlogPost::find($id);
+            if ($posts) {
+                $response = response()->json([
+                    "status"=>true,
+                    "user"=>$posts,
+                    "message" => 'Post Retrieved'
+                ],200);
+            } else {
+                $response = response()->json([
+                    "status"=>false,
+                    "message" => 'Post does not exist'
+                ],404);
+            }
+        } catch (\Throwable $th) {
+            $response = response()->json([
+                'status' => false,
+                'error' => $th->getMessage()
+            ], 500);
+        }
+        return $response;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -108,6 +142,64 @@ class BlogPostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = Auth::user();
+
+            if ($user->role == "admin") {
+                $posts = BlogPost::find($id);
+                $deletePost = $posts->delete();
+
+                if ($deletePost) {
+                    $response = response()->json([
+                        'status' => true,
+                        'message' => 'Post Deleted successfully by the admin :)',
+                    ], 200);
+                } else {
+                    $response = response()->json([
+                        'status' => true,
+                        'message' => 'Operation failed, post was not deleted',
+                    ], 400);
+                }
+
+
+            } else {
+                $posts = $user->post;
+                $postCount = count($posts);
+                if ($postCount > 0) {
+                    foreach($posts as $post){
+
+                        if ($post->id == $id) {
+                            $post->delete();
+                            // dd("hello");
+                            $response = response()->json([
+                                "status"=>true,
+                                "message" => 'Post Deleted successfully :)'
+                            ],200);
+                        }  else {
+                            $response =  response()->json([
+                                "status"=>false,
+                                "message" => 'Unable to delete this post, it doesn\'t belong to you'
+                            ],403);
+                        }
+
+                    }
+                } else {
+                    $response =  response()->json([
+                        "status"=>false,
+                        "message" => 'You dont have any post'
+                    ],404);
+                }
+            }
+
+
+        } catch (\Throwable $th) {
+            report($th);
+            $response = response()->json([
+                "status"=>false,
+                "message" => 'Operation failed, Post not deleted'
+            ],400);
+        }
+
+        return $response;
     }
 }
