@@ -8,6 +8,10 @@ use App\Http\Controllers\UserRegistrationController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\BloggerOperation;
+use App\Http\Controllers\CodeCheckController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -61,6 +65,11 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('admin/register','store');
 });
 
+
+
+Route::post('password/email',ForgotPasswordController::class);
+Route::post('password/code/check', CodeCheckController::class);
+Route::post('password/reset', ResetPasswordController::class);
 
 
 
