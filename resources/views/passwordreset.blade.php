@@ -4,7 +4,8 @@
 
 @component('mail::panel')
 <h1 style="color:red;">{{ $code }}</h1>
+<h1 style="color:red;">{{ $expiringTime }}</h1>
 @endcomponent
 
-<p>The allowed duration of the code is one hour from the time the message was sent</p>
+<p>The allowed duration of the code is five minutes from the time the message was sent</p>
 @endcomponent

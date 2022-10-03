@@ -35,23 +35,26 @@ class ResetPasswordController extends Controller
             // find user's email
             $user = User::firstWhere('email', $passwordReset->email);
 
-            $user->password = Hash::make($request->password);
+            $password =  $request->only('password');
+            function ($user, $password) {
+               return $user->forceFill([
+                    'password' => Hash::make($password)]);
+            };
             // update user password
-            $password = $user->password;
-            // return $password;
-            $result = $user->update($password);
+            return Hash::make($password);
+            // $result = $user->update($password);
 
             // delete current code
              $passwordReset->delete();
-            if ( $result) {
-                return response()->json([
-                    'message' =>'password has been successfully reset'
-                ], 201);
-            } else {
-                return response()->json([
-                    'message' =>'Operation failed'
-                ], 400);
-            }
+            // if ( $result) {
+            //     return response()->json([
+            //         'message' =>'password has been successfully reset'
+            //     ], 201);
+            // } else {
+            //     return response()->json([
+            //         'message' =>'Operation failed'
+            //     ], 400);
+            // }
 
 
         } catch (\Throwable $th) {

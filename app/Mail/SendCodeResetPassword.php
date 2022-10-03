@@ -11,14 +11,16 @@ class SendCodeResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
     public $code;
+    public $expiringTime;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($code)
+    public function __construct($code,$expiringTime)
     {
         $this->code = $code;
+        $this->expiringTime = $expiringTime;
     }
 
     /**

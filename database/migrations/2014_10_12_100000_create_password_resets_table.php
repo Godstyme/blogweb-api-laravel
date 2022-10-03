@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->index();
             $table->string('token');
+            $table->string('expiring');
             $table->timestamps();
         });
     }

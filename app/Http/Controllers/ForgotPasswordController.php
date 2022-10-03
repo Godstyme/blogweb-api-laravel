@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendCodeResetPassword;
 use App\Models\ResetCodePassword;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
@@ -18,8 +20,11 @@ class ForgotPasswordController extends Controller
                 ResetCodePassword::where('email', $request->email)->delete();
 
                 $data['token'] = mt_rand(100000, 999999);
+                $expiringTime = Carbon::now()->addMinutes(2);
+                // $a = DB::table( 'password_resets' )->create( $expiringTime);
+                // return $expiringTime;
                 $codeData = ResetCodePassword::create($data);
-                Mail::to($request->email)->send(new SendCodeResetPassword($codeData->token));
+                Mail::to($request->email)->send(new SendCodeResetPassword($codeData->token, $codeData-> $expiringTime));
 
                 return response()->json([
                     'status'=> true,
