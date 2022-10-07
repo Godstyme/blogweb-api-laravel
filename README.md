@@ -9,7 +9,7 @@ This project provides the following features:
 # Database ERD
 - https://drawsql.app/teams/godstime/diagrams/webblogapi
 
-# Screenshot of some Endpoint
+# Screenshot of some Endpoints
 Dsipay All Post Endpoint            |  Login  Endpoint |  Make a Post Endpoint
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Screenshot](resources/assets/imgs/allpost.png)  |  ![Screenshot](resources/assets/imgs/login.png) | ![Screenshot](resources/assets/imgs/post.png)
