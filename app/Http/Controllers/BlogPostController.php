@@ -21,11 +21,6 @@ class BlogPostController extends Controller
         return PostResource::collection(BlogPost::with(['user','postComment'])
         ->withCount('postComment')
         ->paginate(5));
-        // return  [
-        //     'data'=>$allPost,
-        //     'postcount'=>count($allPost),
-        //     // 'page'=>BlogPost::paginate()
-        // ];
     }
 
     /**
