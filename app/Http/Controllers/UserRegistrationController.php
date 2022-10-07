@@ -21,7 +21,21 @@ class UserRegistrationController extends Controller
      */
     public function index()
     {
-        // return response()->json(["message"=>'Hello World ma',"status"=>true], 202);
+        $guest = User::where('role','guest')->get();
+        if ($guest) {
+            $response =  response()->json([
+                "status" => true,
+                "message" => "guest retrieved",
+                "guest" => $guest,
+                "Total Guest"=> count($guest)
+            ], 200);
+        } else {
+            $response =  response()->json([
+                "status" => false,
+                "message" => "guest not found"
+            ], 404);
+        }
+        return $response;
     }
 
 

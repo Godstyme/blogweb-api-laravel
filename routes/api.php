@@ -44,6 +44,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::controller(CommentController::class)->group(function() {
         Route::get('comment/{id}','show');
         Route::post('comment','store');
+        Route::delete('comment/{id}','destroy');
     });
 
     Route::delete('admin/deleteuser/{id}',[AdminController::class,'destroy']);
@@ -52,10 +53,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
 });
 
-// Route::controller(CommentController::class)->group(function() {
-//     Route::get('show/{postid}/{commentid}','show');
-//     Route::post('comment','store');
-// });
 
 // Route about guest account creation
 Route::controller(UserRegistrationController::class)->group(function() {
@@ -72,7 +69,7 @@ Route::controller(UserLoginController::class)->group(function() {
 
 // Route about admin account creation
 Route::controller(AdminController::class)->group(function() {
-    Route::get('admin/view','index');
+    Route::get('admin/index','index');
     Route::post('admin/register','store');
 });
 
@@ -81,6 +78,7 @@ Route::controller(AdminController::class)->group(function() {
 Route::post('password/email',ForgotPasswordController::class);
 Route::post('password/code/check', CodeCheckController::class);
 Route::post('password/reset', ResetPasswordController::class);
+Route::get('alluser/index',[BloggerOperation::class,'index']);
 
 
 

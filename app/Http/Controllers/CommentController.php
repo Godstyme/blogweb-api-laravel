@@ -124,6 +124,64 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = Auth::user();
+
+            if ($user->role == "admin") {
+                $posts = Comment::find($id);
+                $deletePost = $posts->delete();
+
+                if ($deletePost) {
+                    $response = response()->json([
+                        'status' => true,
+                        'message' => 'Comment Deleted successfully by the admin :)',
+                    ], 200);
+                } else {
+                    $response = response()->json([
+                        'status' => true,
+                        'message' => 'Operation failed, Comment was not deleted',
+                    ], 400);
+                }
+
+
+            } else {
+                $comments = $user->comment;
+                $postCount = count($comments);
+                if ($postCount > 0) {
+                    foreach($comments as $comment){
+
+                        if ($comment->id == $id) {
+                            $comment->delete();
+                            // dd("hello");
+                            $response = response()->json([
+                                "status"=>true,
+                                "message" => 'Comment Deleted successfully :)'
+                            ],200);
+                        }  else {
+                            $response =  response()->json([
+                                "status"=>false,
+                                "message" => 'Unable to delete this comment, it doesn\'t belong to you'
+                            ],403);
+                        }
+
+                    }
+                } else {
+                    $response =  response()->json([
+                        "status"=>false,
+                        "message" => 'You dont have any comment'
+                    ],404);
+                }
+            }
+
+
+        } catch (\Throwable $th) {
+            report($th);
+            $response = response()->json([
+                "status"=>false,
+                "message" => 'Operation failed, Comment not deleted'
+            ],400);
+        }
+
+        return $response;
     }
 }

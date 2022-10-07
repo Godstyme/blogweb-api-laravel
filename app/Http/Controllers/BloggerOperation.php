@@ -14,7 +14,21 @@ class BloggerOperation extends Controller
      */
     public function index()
     {
-        //
+        $allUsers = User::all();
+        if ($allUsers) {
+            $response =  response()->json([
+                "status" => true,
+                "message" => "All users retrieved",
+                "guest" => $allUsers,
+                "Total Guest"=> count($allUsers)
+            ], 200);
+        } else {
+            $response =  response()->json([
+                "status" => false,
+                "message" => "No user found"
+            ], 404);
+        }
+        return $response;
     }
 
 

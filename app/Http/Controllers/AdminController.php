@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\WebBlogMail;
+use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -17,7 +18,21 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return response()->json(["message"=>'Hello World ma',"status"=>true], 202);
+        $admin = User::where('role','admin')->get();
+        if ($admin) {
+            $response =  response()->json([
+                "status" => true,
+                "message" => "Admin retrieved",
+                "admin" => $admin,
+                "Total Admin"=> count($admin)
+            ], 200);
+        } else {
+            $response =  response()->json([
+                "status" => false,
+                "message" => "Admin not found"
+            ], 404);
+        }
+        return $response;
     }
 
     public function store(Request $request)
