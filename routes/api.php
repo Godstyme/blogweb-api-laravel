@@ -36,17 +36,26 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::controller(BlogPostController::class)->group(function() {
         Route::get('post/index','index');
-        Route::get('show/{id}','show');
+        Route::get('post/{id}','show');
         Route::post('makepost','store');
         Route::delete('post/delete/{id}','destroy');
     });
 
+    Route::controller(CommentController::class)->group(function() {
+        Route::get('comment/{id}','show');
+        Route::post('comment','store');
+    });
+
     Route::delete('admin/deleteuser/{id}',[AdminController::class,'destroy']);
-    Route::post('comment',[CommentController::class,'store']);
 
 
 
 });
+
+// Route::controller(CommentController::class)->group(function() {
+//     Route::get('show/{postid}/{commentid}','show');
+//     Route::post('comment','store');
+// });
 
 // Route about guest account creation
 Route::controller(UserRegistrationController::class)->group(function() {

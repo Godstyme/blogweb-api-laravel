@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Models\BlogPost;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -83,7 +82,7 @@ class BlogPostController extends Controller
             if ($posts) {
                 $response = response()->json([
                     "status"=>true,
-                    "user"=>$posts,
+                    "post"=>$posts,
                     "message" => 'Post Retrieved'
                 ],200);
             } else {

@@ -80,19 +80,29 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $comments = Comment::find($id);
+            if ($comments) {
+                $response = response()->json([
+                    "status"=>true,
+                    "comment"=>$comments,
+                    "message" => 'comment Retrieved'
+                ],200);
+            } else {
+                $response = response()->json([
+                    "status"=>false,
+                    "message" => 'comment does not exist'
+                ],404);
+            }
+        } catch (\Throwable $th) {
+            $response = response()->json([
+                'status' => false,
+                'error' => $th->getMessage()
+            ], 500);
+        }
+        return $response;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
