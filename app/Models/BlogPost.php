@@ -9,7 +9,11 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    function user() {
-        return $this->belongsTo(User::class);
+    public function user() {
+        return $this->belongsTo(User::class,'users_id');
+    }
+
+    public function postComment(){
+        return $this->hasMany(Comment::class,'blog_posts_id');
     }
 }

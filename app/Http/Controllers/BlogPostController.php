@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\BlogPost;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -16,30 +18,14 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        try {
-            $posts = BlogPost::all();
-            $totalPost = count($posts);
-            if (count($posts) == 0) {
-                $response = response()->json([
-                    "status"=>false,
-                    "message" => 'No Search Results Found'
-                ],404);
-            } else {
-                $response = response()->json([
-                    "status"=>true,
-                    'data' => $posts,
-                    'message' => 'Retrieved successfully',
-                    "Total Post"=>$totalPost
-                ],200);
-            }
-        } catch (\Throwable $th) {
-            $response = response()->json([
-                'status' => false,
-                'message'=> 'Please login to view all blog',
-                'error' => $th->getMessage()
-            ], 500);
-        }
-        return $response;
+        return PostResource::collection(BlogPost::with(['user','postComment'])
+        ->withCount('postComment')
+        ->paginate(5));
+        // return  [
+        //     'data'=>$allPost,
+        //     'postcount'=>count($allPost),
+        //     // 'page'=>BlogPost::paginate()
+        // ];
     }
 
     /**
@@ -72,7 +58,7 @@ class BlogPostController extends Controller
                     $response = response()->json([
                         "status"=>true,
                         "message" => 'You have successful made a post'
-                    ],200);
+                    ],201);
                 } else {
                     $response = response()->json([
                         "status"=>false,

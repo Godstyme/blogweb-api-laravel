@@ -9,6 +9,7 @@ use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\BloggerOperation;
 use App\Http\Controllers\CodeCheckController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     });
 
     Route::delete('admin/deleteuser/{id}',[AdminController::class,'destroy']);
+    Route::post('comment',[CommentController::class,'store']);
 
 
 
