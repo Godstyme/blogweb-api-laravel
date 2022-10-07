@@ -6,5 +6,10 @@ This project provides the following features:
 - Use a mailing library to send in a forget password URL for resetting password
 - Use JWT to authenticate every role based endpoint
 - Use a solid principle design
-# API DOCS
-- https://documenter.getpostman.com/view/12870704/2s83zgt4ts
+# Database ERD
+- https://drawsql.app/teams/godstime/diagrams/webblogapi
+
+# Screenshot of some Endpoint
+Dsipay All Post Endpoint            |  Login  Endpoint |  Make a Post Endpoint
+:-------------------------:|:-------------------------:|:-------------------------:
+![Screenshot](resources/assets/imgs/allpost.png)  |  ![Screenshot](resources/assets/imgs/login.png) | ![Screenshot](resources/assets/imgs/post.png)
