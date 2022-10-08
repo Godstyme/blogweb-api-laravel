@@ -133,7 +133,7 @@ class BlogPostController extends Controller
                     $response = response()->json([
                         'status' => true,
                         'message' => 'Post Deleted successfully by the admin :)',
-                    ], 200);
+                    ], 204);
                 } else {
                     $response = response()->json([
                         'status' => true,
@@ -152,9 +152,9 @@ class BlogPostController extends Controller
                             $post->delete();
                             // dd("hello");
                             $response = response()->json([
-                                "status"=>true,
-                                "message" => 'Post Deleted successfully :)'
-                            ],200);
+                                // "status"=>true,
+                                // "message" => 'Post Deleted successfully :)'
+                            ],204);
                         }  else {
                             $response =  response()->json([
                                 "status"=>false,

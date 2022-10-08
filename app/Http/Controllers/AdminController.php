@@ -160,7 +160,7 @@ class AdminController extends Controller
                 $response = response()->json([
                     'status' => true,
                     'message' => 'User Deleted successfully by the admin :)',
-                ], 200);
+                ], 204);
             } else {
                 $response = response()->json([
                     'status' => false,

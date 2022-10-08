@@ -135,7 +135,7 @@ class CommentController extends Controller
                     $response = response()->json([
                         'status' => true,
                         'message' => 'Comment Deleted successfully by the admin :)',
-                    ], 200);
+                    ], 204);
                 } else {
                     $response = response()->json([
                         'status' => true,
@@ -156,7 +156,7 @@ class CommentController extends Controller
                             $response = response()->json([
                                 "status"=>true,
                                 "message" => 'Comment Deleted successfully :)'
-                            ],200);
+                            ],204);
                         }  else {
                             $response =  response()->json([
                                 "status"=>false,

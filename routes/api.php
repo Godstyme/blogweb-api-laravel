@@ -38,7 +38,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         Route::get('post/index','index');
         Route::get('post/{id}','show');
         Route::post('makepost','store');
-        Route::delete('post/delete/{id}','destroy');
+        Route::delete('post/{id}','destroy');
     });
 
     Route::controller(CommentController::class)->group(function() {
