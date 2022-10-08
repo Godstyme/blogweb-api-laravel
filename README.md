@@ -13,3 +13,20 @@ This project provides the following features:
 Dsipay All Post Endpoint            |  Login  Endpoint |  Make a Post Endpoint
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Screenshot](resources/assets/imgs/allpost.png)  |  ![Screenshot](resources/assets/imgs/login.png) | ![Screenshot](resources/assets/imgs/post.png)
+
+## Quick Setup ⚙️
+First, clone repo and install all dependencies.
+```sh
+$ git clone https://github.com/Godstyme/blogweb-api-laravel
+$ cd blogweb-api-laravel
+$ composer install
+```
+Setup database by creating a database called `webblog` in your `phpMyAdmin`. This example uses the `webblog` database as configured in the app `.env` file.
+We have to use a migration command to prepare the database migration classes for the target tables.
+
+```sh
+$ php artisan migrate
+$ php artisan serve
+``` 
+
+Don't forget to star the project :)
