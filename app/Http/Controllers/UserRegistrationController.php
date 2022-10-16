@@ -52,7 +52,7 @@ class UserRegistrationController extends Controller
 
             $validateUser = [
                 'name' =>   'required|string|min:5|max:50',
-                'email' => ['required', 'string', 'email', 'max:80', 'unique:users'],
+                'email' => ['required', 'string', 'email:rfc,dns', 'max:80', 'unique:users'],
                 'password' => 'required|min:8'
             ];
             $validator = Validator::make($request->all(), $validateUser);

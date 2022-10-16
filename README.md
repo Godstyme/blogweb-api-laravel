@@ -21,7 +21,7 @@ $ git clone https://github.com/Godstyme/blogweb-api-laravel
 $ cd blogweb-api-laravel
 $ composer install
 ```
-Setup database by creating a database called `webblog` in your `phpMyAdmin`. This example uses the `webblog` database as configured in the app `.env` file.
+Setup database by creating a database called `webblog` in your `phpMyAdmin`. This api uses the `webblog` database as configured in the app `.env` file.
 We have to use a migration command to prepare the database migration classes for the target tables.
 
 ```sh
